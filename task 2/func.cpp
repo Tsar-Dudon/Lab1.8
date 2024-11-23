@@ -21,11 +21,15 @@ bool Read(short& cnt, std::string mas[5120])
     return true;
 }
 
-void Write(short cnt, std::string mas[5120])
+void Write(short l, short n, std::string VowelsMas[5120], std::string NotDoubleVowels[5120])
 {
-	for(short i = 0; i < cnt; i++)
+	for(short i = 0; i < l; i++)
 	{
-		std::cout << "<" << mas[i] << ">" << std::endl;
+		std::cout << VowelsMas[i] << std::endl;  
+	}
+	for(short i = 0; i < n; i++)
+	{
+		std::cout << NotDoubleVowels[i] << std::endl;  
 	}
 }
 
@@ -41,50 +45,69 @@ void clear_and_lower(short cnt, std::string mas[5120])
 			}
 			else
 			{
+				mas[i][j] = tolower(mas[i][j]);
 				j++;
 			}
-			mas[i][j] = tolower(mas[i][j]);
 		}
 	}
 }
 
-void OnlyCons(short cnt, std::string mas[2001], short UniqueCons[2001])
+void HaveDoubleVowels(short cnt, short& l, short& n, std::string mas[5120], std::string VowelsMas[5120], std::string NotDoubleVowels[5120])
 {
+	l = 0;
+	n = 0;
 	for(short i = 0; i < cnt; i++)
 	{
-		short cntOfUnique = 0;
 		char letters[256] = {0};
+		short max = -1;
 		for(short j = 0; j < mas[i].length(); j++)
 		{
 			if((mas[i][j] == 'a') || (mas[i][j] == 'e') || (mas[i][j] == 'i') || (mas[i][j] == 'o') || (mas[i][j] == 'u') || (mas[i][j] == 'y'))
-			{
-				continue;
-			}
-			else
 			{
 				letters[mas[i][j]]++;
 			}
 		}
 		for(short k = 0; k < 256; k++)
 		{
-			if(letters[k] != 0)
+			if(letters[k] > max)
 			{
-				cntOfUnique++;
+				max = letters[k];
 			}
-		UniqueCons[i] = cntOfUnique;
+		}
+		if(max > 1)
+		{
+			VowelsMas[l] = mas[i];
+			l++;
+		}
+		else
+		{
+			NotDoubleVowels[n] = mas[i];
+			n++;
 		}
 	}
 }
 
-void Sort(short cnt, std::string mas[2001], short UniqueCons[2001])
+void Sort(short l, std::string VowelsMas[5120])
 {
-	for(short i = 0; i < cnt - 1; i++)
-		for(short j = i + 1; j < cnt; j++)
+	for(short i = 0; i < l - 1; i++)
+		for(short j = i + 1; j < l; j++)
 		{
-			if((UniqueCons[j] > UniqueCons[i]) || ((UniqueCons[j] == UniqueCons[i]) && (mas[i] < mas[j])))
+			if(VowelsMas[i] > VowelsMas[j])
 			{
-				std::swap(UniqueCons[i], UniqueCons[j]);
-				std::swap(mas[i], mas[j]);
+				std::swap(VowelsMas[i], VowelsMas[j]);
 			}
 		}
+}
+
+void Reverse(short n, std::string NotDoubleVowels[5120])
+{
+	for(short i = 0; i < n; i++)
+	{
+		std::string a = NotDoubleVowels[i];
+		for(short j = 0; j < (a.length()/2); j++)
+		{
+			std::swap(a[j], a[a.length() - 1 - j]);
+		}
+		NotDoubleVowels[i] = a;
+	}
 }
