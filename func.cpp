@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-bool Read(short& cnt, std::string mas[2000])
+bool Read(short& cnt, std::string mas[2001])
 {
 	std::ifstream in("input.txt"); //открытие файла
 	if(!in.is_open()) //Проверка существования файла
@@ -21,15 +21,20 @@ bool Read(short& cnt, std::string mas[2000])
     return true;
 }
 
-void Write(short cnt, std::string mas[2000], std::string ConsMas[2000], short UniqueCons[2000])
+void Write(short cnt, std::string mas[2001], short UniqueCons[2001])
 {
+	std::ofstream out("output.txt");
 	for(short i = 0; i < cnt; i++)
 	{
-		std::cout << "<" << mas[i] << ">" << " " << "<" << ConsMas[i] << ">" << " " << UniqueCons[i] << std::endl;
+		std::cout << "<" << mas[i] << ">" << " " << UniqueCons[i] << std::endl;
+		if(mas[i] != mas[i + 1])
+		{
+			out << mas[i] << "(" << UniqueCons[i] << ")" << std::endl;
+		}
 	}
 }
 
-void clear_and_lower(short cnt, std::string mas[2000])
+void clear_and_lower(short cnt, std::string mas[2001])
 {
 	for(short i = 0; i < cnt; i++)
 	{
@@ -48,35 +53,22 @@ void clear_and_lower(short cnt, std::string mas[2000])
 	}
 }
 
-void OnlyCons(short cnt, std::string mas[2000], std::string ConsMas[2000])
-{
-	for(short i = 0; i < cnt; i++)
-	{
-		std::string a = mas[i];
-		for(short j = 0; j < a.length();)
-		{
-			if((a[j] == 'a') || (a[j] == 'e') || (a[j] == 'i') || (a[j] == 'o') || (a[j] == 'u') || (a[j] == 'y'))
-			{
-				a.erase(j, 1);
-			}
-			else
-			{
-				j++;
-			}
-			ConsMas[i] = a;
-		}
-	}
-}
-
-void CountUniqueCons(short cnt, std::string mas[2000], std::string ConsMas[2000], short UniqueCons[2000])
+void OnlyCons(short cnt, std::string mas[2001], short UniqueCons[2001])
 {
 	for(short i = 0; i < cnt; i++)
 	{
 		short cntOfUnique = 0;
 		char letters[256] = {0};
-		for(short j = 0; j < ConsMas[i].length(); j++)
+		for(short j = 0; j < mas[i].length(); j++)
 		{
-			letters[ConsMas[i][j]]++;
+			if((mas[i][j] == 'a') || (mas[i][j] == 'e') || (mas[i][j] == 'i') || (mas[i][j] == 'o') || (mas[i][j] == 'u') || (mas[i][j] == 'y'))
+			{
+				continue;
+			}
+			else
+			{
+				letters[mas[i][j]]++;
+			}
 		}
 		for(short k = 0; k < 256; k++)
 		{
@@ -87,4 +79,17 @@ void CountUniqueCons(short cnt, std::string mas[2000], std::string ConsMas[2000]
 		UniqueCons[i] = cntOfUnique;
 		}
 	}
+}
+
+void Sort(short cnt, std::string mas[2001], short UniqueCons[2001])
+{
+	for(short i = 0; i < cnt - 1; i++)
+		for(short j = i + 1; j < cnt; j++)
+		{
+			if((UniqueCons[j] > UniqueCons[i]) || ((UniqueCons[j] == UniqueCons[i]) && (mas[i] < mas[j])))
+			{
+				std::swap(UniqueCons[i], UniqueCons[j]);
+				std::swap(mas[i], mas[j]);
+			}
+		}
 }
