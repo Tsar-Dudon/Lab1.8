@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-bool Read(short& cnt, std::string mas[2001])
+bool Read(short& cnt, std::string mas[5120])
 {
 	std::ifstream in("input.txt"); //открытие файла
 	if(!in.is_open()) //Проверка существования файла
@@ -21,20 +21,15 @@ bool Read(short& cnt, std::string mas[2001])
     return true;
 }
 
-void Write(short cnt, std::string mas[2001], short UniqueCons[2001])
+void Write(short cnt, std::string mas[5120])
 {
-	std::ofstream out("output.txt");
 	for(short i = 0; i < cnt; i++)
 	{
-		std::cout << "<" << mas[i] << ">" << " " << UniqueCons[i] << std::endl;
-		if(mas[i] != mas[i + 1])
-		{
-			out << mas[i] << "(" << UniqueCons[i] << ")" << std::endl;
-		}
+		std::cout << "<" << mas[i] << ">" << std::endl;
 	}
 }
 
-void clear_and_lower(short cnt, std::string mas[2001])
+void clear_and_lower(short cnt, std::string mas[5120])
 {
 	for(short i = 0; i < cnt; i++)
 	{
@@ -46,9 +41,9 @@ void clear_and_lower(short cnt, std::string mas[2001])
 			}
 			else
 			{
-				mas[i][j] = tolower(mas[i][j]);
 				j++;
 			}
+			mas[i][j] = tolower(mas[i][j]);
 		}
 	}
 }
