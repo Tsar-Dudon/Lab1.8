@@ -3,79 +3,6 @@
 #include <string>
 #include <fstream>
 
-void findMax(char letters[256], char ValuesMaxes[8], char LettersMaxes[8])
-{
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if(ValuesMaxes[0] < letters[i])
-		{
-			LettersMaxes[0] = i;
-			ValuesMaxes[0] = letters[i];
-		}
-	}
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if((ValuesMaxes[1] < letters[i]) && (letters[i] <= ValuesMaxes[0]) && (i != LettersMaxes[0]))
-		{
-			LettersMaxes[1] = i;
-			ValuesMaxes[1] = letters[i];
-		}
-	}
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if((ValuesMaxes[2] < letters[i]) && (letters[i] <= ValuesMaxes[1]) && (i != LettersMaxes[0]) && (i != LettersMaxes[1]))
-		{
-			LettersMaxes[2] = i;
-			ValuesMaxes[2] = letters[i];
-		}
-	}
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if((ValuesMaxes[3] < letters[i]) && (letters[i] <= ValuesMaxes[2]) && (i != LettersMaxes[0]) && (i != LettersMaxes[1]) 
-		&& (i != LettersMaxes[2]))
-		{
-			LettersMaxes[3] = i;
-			ValuesMaxes[3] = letters[i];
-		}
-	}
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if((ValuesMaxes[4] < letters[i]) && (letters[i] <= ValuesMaxes[3]) && (i != LettersMaxes[0]) && (i != LettersMaxes[1]) 
-		&& (i != LettersMaxes[2]) && (i != LettersMaxes[3]))
-		{
-			LettersMaxes[4] = i;
-			ValuesMaxes[4] = letters[i];
-		}
-	}
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if((ValuesMaxes[5] < letters[i]) && (letters[i] <= ValuesMaxes[4]) && (i != LettersMaxes[0]) && (i != LettersMaxes[1]) 
-		&& (i != LettersMaxes[2]) && (i != LettersMaxes[3]) && (i != LettersMaxes[4]))
-		{
-			LettersMaxes[5] = i;
-			ValuesMaxes[5] = letters[i];
-		}
-	}
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if((ValuesMaxes[6] < letters[i]) && (letters[i] <= ValuesMaxes[5]) && (i != LettersMaxes[0]) && (i != LettersMaxes[1]) 
-		&& (i != LettersMaxes[2]) && (i != LettersMaxes[3]) && (i != LettersMaxes[4]) && (i != LettersMaxes[5]))
-		{
-			LettersMaxes[6] = i;
-			ValuesMaxes[6] = letters[i];
-		}
-	}
-	for(char i = 'a'; i < 'z' + 1; i++)
-	{
-		if((ValuesMaxes[7] < letters[i]) && (letters[i] <= ValuesMaxes[6]) && (i != LettersMaxes[0]) && (i != LettersMaxes[1]) 
-		&& (i != LettersMaxes[2]) && (i != LettersMaxes[3]) && (i != LettersMaxes[4]) && (i != LettersMaxes[5]) && (i != LettersMaxes[6]))
-		{
-			LettersMaxes[7] = i;
-			ValuesMaxes[7] = letters[i];
-		}
-	}
-}
-
 int main()
 {	
 	short cnt;
@@ -84,7 +11,7 @@ int main()
 	char ValuesMaxes[8] = {CHAR_MIN};
 	char LettersMaxes[8] = {CHAR_MIN};
 
-	if(!Read(cnt, masChars))
+	if(!ReadChars(cnt, masChars))
 	{
 		return -1;
 	}	
@@ -93,8 +20,21 @@ int main()
 
 	findMax(letters, ValuesMaxes, LettersMaxes);
 
-	for(short i = 0; i < 8; i++)
-		std::cout << LettersMaxes[i] << " " << (int)ValuesMaxes[i] << std::endl;
+	short cnt1;
+	std::string masWords[5120];
+
+	ReadWords(cnt1, masWords);
+
+	lower_words(cnt1, masWords);
+
+	is_needed(cnt1, masWords, LettersMaxes);
+
+	for(int i = 0; i < cnt1; i++)
+	{
+		std::cout << masWords[i] << std::endl;
+	}
+
+	Write(cnt1, masWords);
 
 	return 0;
 }
