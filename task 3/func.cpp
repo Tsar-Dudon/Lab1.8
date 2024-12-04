@@ -126,10 +126,11 @@ void lower_words(short cnt1, std::string mas[5120])
 	}
 }
 
-void is_needed(short cnt1, std::string mas[5120], char LetterMaxes[8])
+void is_needed(short cnt1, std::string mas[5120], char LetterMaxes[8], char lettersInWords[5120][9])
 {
 	for(short i = 0; i < cnt1; i++)
 	{
+		short u = 0;
 		char letters1[256] = {0};
 		short sum = 0;
 		for(short j = 0; j < mas[i].length(); j++)
@@ -138,6 +139,20 @@ void is_needed(short cnt1, std::string mas[5120], char LetterMaxes[8])
 			(mas[i][j] == LetterMaxes[4]) || (mas[i][j] == LetterMaxes[5]) || (mas[i][j] == LetterMaxes[6]) || (mas[i][j] == LetterMaxes[7]))
 			{
 				letters1[mas[i][j]] = 1;
+				bool isDouble = false;
+				for(short q = 0; q < 8; q++)
+				{
+					if(lettersInWords[i][q] == mas[i][j])
+					{
+						isDouble = true;
+						break;
+					}
+				}
+				if(!isDouble)
+				{
+					lettersInWords[i][u] = mas[i][j];
+					u++;
+				}
 			}
 		}
 		for(int e = 0; e < 256; e++)
@@ -146,6 +161,7 @@ void is_needed(short cnt1, std::string mas[5120], char LetterMaxes[8])
 		}
 		if(sum >= 5)
 		{
+			lettersInWords[i][8] = 1;
 			for(short j = 0; j < mas[i].length(); j++)
 			{
 				mas[i][j] = toupper(mas[i][j]);
